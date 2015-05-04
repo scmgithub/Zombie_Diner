@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>The Walking Fed</title>
+	<link rel="stylesheet" href="./css/style.css"/>
+</head>
+<body>
+	<h1 id="restaurant-name">The Walking Fed</h1>
+	<section id='dishes'>
+		<h1>Available Dishes</h1>
+		<div id="addDishForm">
+			<!-- <select id='category-selector' name="category">
+			</select> -->
+		</div>
+		<div> <!-- maybe remove this div -->
+			<a href="#/">show all</a>
+			<a href="#/pending">show pending</a>
+		</div>
+		<div>
+			<ul id='dishes-list'></ul>
+		</div>
+	</section>
+
+	<section id='categories'>
+		<h1>Categories</h1>
+		<div id="addCategoryForm">
+			<input type="text" id="new-category-name" placeholder="Add a category here">
+			<button id='add-new-category'>Add Category</button>
+		</div>
+		<section id="categories">
+			<ul id='category-list'></ul>
+		</section>
+	</section>
+
+<script type="text/template" id="add-dish-template">
+    <input type="text" id="new-dish-name" placeholder="Add a new dish here" autofocus>
+	<input type="number" id='new-dish-price' placeholder="$">
+	<input type="text" id='new-dish-url' placeholder="image url">
+	<select id="category-selector">
+        <% categories.each(function(category) { %>
+            <option value="<%= category.get('name') %>"><%= category.get('name') %></option>
+        <% }); %>
+    </select>
+	<button id='add-new-dish'>Add Dish</button>
+</script>
+
+	<script type='text/template' id='categoriesListTemplate'>
+		<ul id="categoriesList"></ul>
+	</script>
+
+	<script type="text/template" id="showCategory">
+		<span class = "category">
+			<%= category.name %>
+			<button class="editCategoryButton">Edit</button>
+			<button class="deleteCategoryButton">Delete</button>
+		</span>
+		<span class="editCategoryForm" style="display: none">
+			<input type="text" id="newCategory<%= category.id%>" value="<%= category.name %>">
+			<button class="updateCategoryButton">Update</button>
+		</span>
+	</script>
+
+	<script type='text/template' id="dishesListTemplate">
+		<ul id="dishesList"></ul>
+	</script>
+
+	<script type='text/template' id='showDish'>
+		<span class="dish">
+			<%= dish.name %> <img src='<%= dish.image_url %>'>  $<%= dish.price %> <%= dish.category_id %>
+			<button class="editButton">Edit</button>
+        	<button class="deleteButton">Delete</button><br>
+		</span>
+		<span class="editForm" style="display: none">
+        	<input type="text" id="newName<%= dish.id%>" value="<%= dish.name %>">
+        	<input type="number" id="newPrice<%= dish.id%>" value="<%= dish.price %>">
+        	<input type="text" id="newImageUrl<%= dish.id%>" value="<%= dish.image_url %>">
+        	<button class="updateButton">Update</button>        
+      	</span>
+	</script>
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+	<script src="http://documentcloud.github.com/underscore/underscore-min.js"></script>
+	<script src="http://documentcloud.github.com/backbone/backbone-min.js"></script>
+
+	<script src = "/scripts/models.js"></script>
+	<script src = "/scripts/collections.js"></script>
+	<script src = "/scripts/views.js"></script>
+	<script src = "/scripts/routes.js"></script>
+
+</body>
+</html>

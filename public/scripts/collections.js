@@ -3,9 +3,6 @@ var DishCollection = Backbone.Collection.extend({
 	url: '/dishes'
 });
 
-var dishes = new DishCollection();
-dishes.fetch();
-
 var CategoryCollection = Backbone.Collection.extend({
 	model: Category,
 	url: '/categories'
@@ -13,3 +10,24 @@ var CategoryCollection = Backbone.Collection.extend({
 
 var categories = new CategoryCollection();
 categories.fetch();
+
+var dishes = new DishCollection();
+dishes.fetch();
+
+
+
+
+
+
+
+// Crawford "review"
+// var appDish = new DishCollection;
+// appDish.fetch(null, {
+// 	success: function(model, response) {
+// 		response.forEach(function(item) {
+// 			if (item.category_id === 2) {
+// 				appDish.add([item]);
+// 			}
+// 		})
+// 	}
+// });

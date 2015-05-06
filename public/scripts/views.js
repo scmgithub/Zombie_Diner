@@ -1,7 +1,13 @@
 $(document).ready(function() {
+
 	var DishView = Backbone.View.extend( {
 		tagName: 'li',
 		template: _.template($('#showDish').html()),
+		initialize: function() {
+//			this.listenToOnce(categories, 'sync', this.render.bind(this));
+this.listenTo(categories, "sync remove", this.render.bind(this));
+			// this.listenTo(this.model, 'change', this.render.bind(this));
+		},
 		events: {
 			"click button.deleteButton": "deleteDish",
 			"click button.editButton": "editDish",
@@ -12,8 +18,9 @@ $(document).ready(function() {
 			var newName=this.$("#newName"+this.model.id).val();
 			var newPrice=this.$("#newPrice"+this.model.id).val();
 			var newImageUrl=this.$("#newImageUrl"+this.model.id).val();
+			var newCategory=this.$("#newCategory"+this.model.id).val();
 
-			this.model.set({name: newName, price: newPrice, image_url: newImageUrl});
+			this.model.set({name: newName, price: newPrice, image_url: newImageUrl, category_id: newCategory});
 
 			this.model.save();
 		},
@@ -28,7 +35,8 @@ $(document).ready(function() {
 		},
 
 		render: function() {
-			this.$el.html(this.template({dish: this.model.toJSON()}));
+			console.log('render dish');
+			this.$el.html(this.template({dish: this.model.toJSON(), categories: categories}));
 			return this;
 		}
 	});
@@ -37,6 +45,7 @@ $(document).ready(function() {
 		el: "ul#dishes-list",
 		initialize: function() {
 			this.listenTo(this.collection,"sync remove", this.render);
+this.listenTo(categories, "sync remove", this.render);
 		},
 		render: function() {
 			var dishes = this.$el;
@@ -54,32 +63,33 @@ $(document).ready(function() {
 		template: _.template($("#add-dish-template").html()),
 		initialize: function() {
 			this.listenTo(this.collection,"sync remove", this.render);
+			this.listenTo(categories, "sync remove", this.render);
 		},
 
 		createDish: function() {
 			var nameField = this.$("#new-dish-name");
 			var priceField = this.$("#new-dish-price");
 			var imageUrlField = this.$("#new-dish-url");
+			var categoryField = this.$("#category-selector");
 			var name = nameField.val();
 			var price = priceField.val();
 			var imageUrl = imageUrlField.val();
 			if (!imageUrl) {
 				imageUrl= "http://fc02.deviantart.net/fs71/i/2010/152/2/3/donald_zombie_by_guiadonald.jpg";
 			}
-			this.collection.create({name: name, price: price, image_url:imageUrl});
+			var category_id = categoryField.val();
+			this.collection.create({name: name, price: price, image_url:imageUrl, category_id: category_id});
 
 			nameField.val("");
 			priceField.val("");
 			imageUrlField.val("");
+			categoryField.val("");
 		},
 		render: function() {
 			var cats = new CategoryCollection();
 			var view = this;
 			cats.fetch({ 
 				success: function(collection, response) {
-					console.log('i"m here');
-				console.log(collection);
-				console.log(response);
 				view.$el.html(view.template({categories: collection}));
 				return this;
 			}});

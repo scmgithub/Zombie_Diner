@@ -6,44 +6,46 @@
 	<link rel="stylesheet" href="./css/style.css"/>
 </head>
 <body>
+	<audio id="zombie-babble" src="./media/zombie_babbling.mp3"></audio>
+	<script>
+		document.getElementById('zombie-babble').play();
+	</script>
 	<h1 id="restaurant-name">The Walking Fed</h1>
 	<section id='dishes'>
-		<h1>Available Dishes</h1>
+		<h1>Available Dishes</h1><hr color="#990000" width=60% align="center">
 		<div id="addDishForm">
-			<!-- <select id='category-selector' name="category">
-			</select> -->
 		</div>
-		<div> <!-- maybe remove this div -->
+		<!--<div>  
 			<a href="#/">show all</a>
 			<a href="#/pending">show pending</a>
-		</div>
+		</div>-->
 		<div>
 			<ul id='dishes-list'></ul>
 		</div>
 	</section>
 
 	<section id='categories'>
-		<h1>Categories</h1>
+		<h1>Categories</h1><hr color="#990000" width=60% align="center">
 		<div id="addCategoryForm">
 			<input type="text" id="new-category-name" placeholder="Add a category here">
 			<button id='add-new-category'>Add Category</button>
 		</div>
-		<section id="categories">
+		<div id="categories">
 			<ul id='category-list'></ul>
-		</section>
+		</div>
 	</section>
 
-<script type="text/template" id="add-dish-template">
-    <input type="text" id="new-dish-name" placeholder="Add a new dish here" autofocus>
-	<input type="number" id='new-dish-price' placeholder="$">
-	<input type="text" id='new-dish-url' placeholder="image url">
-	<select id="category-selector">
-        <% categories.each(function(category) { %>
-            <option value="<%= category.get('name') %>"><%= category.get('name') %></option>
-        <% }); %>
-    </select>
-	<button id='add-new-dish'>Add Dish</button>
-</script>
+	<script type="text/template" id="add-dish-template">
+	    <input type="text" id="new-dish-name" placeholder="Add a new dish here" autofocus>
+		<input type="number" id='new-dish-price' placeholder="$">
+		<input type="text" id='new-dish-url' placeholder="image url">
+		<select id="category-selector">
+	        <% categories.each(function(category) { %>
+	            <option value="<%= category.get('id') %>"><%= category.get('name') %></option>
+	        <% }); %>
+	    </select>
+		<button id='add-new-dish'>Add Dish</button>
+	</script>
 
 	<script type='text/template' id='categoriesListTemplate'>
 		<ul id="categoriesList"></ul>
@@ -67,15 +69,26 @@
 
 	<script type='text/template' id='showDish'>
 		<span class="dish">
-			<%= dish.name %> <img src='<%= dish.image_url %>'>  $<%= dish.price %> <%= dish.category_id %>
-			<button class="editButton">Edit</button>
-        	<button class="deleteButton">Delete</button><br>
+			<img src='<%= dish.image_url %>'>
+			<div class=dish-text>
+				<%= dish.name %> ~
+				$<%= dish.price %> ~
+				<%= dish.category.name %><br>
+				<button class="editButton">Edit</button>
+        		<button class="deleteButton">Delete</button><hr color="#990000" width=30% align="center">
+        	</div>
 		</span>
 		<span class="editForm" style="display: none">
         	<input type="text" id="newName<%= dish.id%>" value="<%= dish.name %>">
         	<input type="number" id="newPrice<%= dish.id%>" value="<%= dish.price %>">
         	<input type="text" id="newImageUrl<%= dish.id%>" value="<%= dish.image_url %>">
-        	<button class="updateButton">Update</button>        
+        	<select id="newCategory<%= dish.id%>">
+        		<% categories.each(function(category) { %>
+	            	<option value="<%= category.get('id') %>" <%= (category.get('id') === dish.category.id) ? "selected":"" %> > <%= category.get('name') %> </option>
+        		<% }); %>
+    		</select>
+        	<button class="updateButton">Update</button>  
+        	<hr color="#990000" width=30% align="center">      
       	</span>
 	</script>
 
@@ -87,6 +100,5 @@
 	<script src = "/scripts/collections.js"></script>
 	<script src = "/scripts/views.js"></script>
 	<script src = "/scripts/routes.js"></script>
-
 </body>
 </html>

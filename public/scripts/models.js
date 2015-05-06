@@ -1,9 +1,12 @@
 var Dish = Backbone.Model.extend({
 	initialize: function() {
 		console.log("Dish created");
-		this.on('change', function(){
-            console.log("Dish changed");
+		this.on('change:category_id', function() {
+			this.attributes.category = categories.get(this.attributes.category_id).toJSON();
+            console.log("Dish category changed");
         });
+
+        this.attributes.category = categories.get(this.attributes.category_id).toJSON();
 	},
 	defaults: {
         name: "Chow",

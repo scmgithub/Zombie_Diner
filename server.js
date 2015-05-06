@@ -1,3 +1,4 @@
+var secrets = require('./secrets.json');
 var express = require('express');
 var bodyParser = require('body-parser');
 var sqlite3 = require("sqlite3").verbose();
@@ -130,5 +131,7 @@ app.delete('/dishes/:id', function(req, res) {
 	});
 });
 
-app.listen(3000);
-console.log('Listening on port 3000');
+var port = secrets['port'];  // fancy hosting! 
+app.listen(port, function() {
+	console.log('Listening on port '+port);
+});
